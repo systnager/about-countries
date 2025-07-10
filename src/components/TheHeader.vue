@@ -1,0 +1,5 @@
+<template>
+  <nav>
+    <h1>HEADER</h1>
+  </nav>
+</template>
