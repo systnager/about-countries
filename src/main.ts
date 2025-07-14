@@ -4,8 +4,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { router } from '@/router/index'
 import { createI18n } from 'vue-i18n'
-import ukr from '@/locales/ukr.json'
-import eng from '@/locales/eng.json'
+import ukr from '@/i18n/locales/ukr.json'
+import eng from '@/i18n/locales/eng.json'
 
 import App from './App.vue'
 
