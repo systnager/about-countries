@@ -6,6 +6,13 @@
     "main": "Головна",
     "choice ukr": "Українська",
     "choice eng": "Англійська",
-    "change theme": "Змінити тему"
+    "change theme": "Змінити тему",
+    "region": "Регіон",
+    "name": "Назва",
+    "population": "Населення",
+    "area": "Площа",
+    "favorite": "Додати в обрані",
+    "unfavorite": "Видалити з обраного",
+    "language": "Мова"
   }
 }

@@ -7,7 +7,9 @@ const { isDark, toggleDark } = useTheme()
 </script>
 
 <template>
-  <nav class="flex items-center justify-between p-5 bg-gray-200 dark:bg-gray-600 dark:text-white">
+  <nav
+    class="sticky top-0 flex items-center justify-between p-5 bg-gray-200 dark:bg-gray-600 dark:text-white w-full z-10 h-16 shadow-md"
+  >
     <RouterLink
       class="text-xl px-5 py-2 font-bold w-64 cursor-pointer transition hover:scale-110 active:scale-90"
       to="/"

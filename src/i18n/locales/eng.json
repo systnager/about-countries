@@ -6,6 +6,13 @@
     "main": "Main",
     "choice ukr": "Ukrainian",
     "choice eng": "English",
-    "change theme": "Change theme"
+    "change theme": "Change theme",
+    "region": "Region",
+    "name": "Name",
+    "population": "Population",
+    "area": "Area",
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
+    "language": "Language"
   }
 }
