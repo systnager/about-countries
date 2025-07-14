@@ -1,7 +1,7 @@
 import { useDark, useToggle } from '@vueuse/core'
 
 const isDark = useDark({
-  selector: '#app',
+  selector: 'html',
   valueDark: 'dark',
   valueLight: '',
   storageKey: 'theme',
