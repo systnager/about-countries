@@ -13,6 +13,13 @@
     "area": "Площа",
     "favorite": "Додати в обрані",
     "unfavorite": "Видалити з обраного",
-    "language": "Мова"
+    "language": "Мова",
+    "by population": "за населенням",
+    "by area": "За площею",
+    "by population density": "За густотою населення",
+    "sort by": "Сортувати за",
+    "by name": "За назвою",
+    "by continent": "За континентом",
+    "by language": "За мовою"
   }
 }

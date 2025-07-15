@@ -13,6 +13,13 @@
     "area": "Area",
     "favorite": "Add to favorites",
     "unfavorite": "Remove from favorites",
-    "language": "Language"
+    "language": "Language",
+    "by population": "By population",
+    "by area": "By area",
+    "by population density": "By population density",
+    "sort by": "Sort by",
+    "by name": "By name",
+    "by continent": "By continent",
+    "by language": "By language"
   }
 }
