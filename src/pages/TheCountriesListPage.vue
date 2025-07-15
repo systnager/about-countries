@@ -4,6 +4,7 @@ import { watchDebounced } from '@vueuse/core'
 import type { Country } from '@/types/Countries'
 import { useI18n } from 'vue-i18n'
 import CountryCardList from '@/components/CountryCardList.vue'
+import WaitLoader from '@/components/WaitLoader.vue'
 import {
   useCountries,
   fetchCountries,
@@ -18,6 +19,8 @@ import {
 const { t } = useI18n()
 const { countries } = useCountries()
 
+const isLoading = ref(false)
+
 const filteredCountries = ref<Country[]>([])
 
 const filterByNameInput = ref<string>('')
@@ -25,6 +28,7 @@ const filterByRegionInput = ref<string>('')
 const filterByLanguageInput = ref<string>('')
 
 function onSortCountries(value: string) {
+  showLoader()
   if (value === 'byPopulation') {
     sortCountriesByPopulation()
   } else if (value === 'byArea') {
@@ -33,9 +37,11 @@ function onSortCountries(value: string) {
     sortCountriesByPopulationDensity()
   }
   filterCountries()
+  hideLoader()
 }
 
 function filterCountries() {
+  showLoader()
   filteredCountries.value = countries.value
   if (filterByNameInput.value) {
     filteredCountries.value = filterCountriesByName(
@@ -55,11 +61,24 @@ function filterCountries() {
       filterByLanguageInput.value,
     )
   }
+  hideLoader()
+}
+
+function showLoader() {
+  isLoading.value = true
+}
+
+function hideLoader() {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1000)
 }
 
 onMounted(async () => {
+  showLoader()
   await fetchCountries()
   filteredCountries.value = countries.value
+  hideLoader()
 })
 
 watchDebounced(
@@ -73,6 +92,7 @@ watchDebounced(
 
 <template>
   <div>
+    <WaitLoader v-if="isLoading" />
     <div class="flex justify-between m-5">
       <div class="flex gap-3">
         <select
