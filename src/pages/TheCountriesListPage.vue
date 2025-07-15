@@ -76,7 +76,7 @@ watchDebounced(
     <div class="flex justify-between m-5">
       <div class="flex gap-3">
         <select
-          class="w-52 h-9 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
+          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md cursor-pointer truncate"
           @change="onSortCountries(($event.target as HTMLSelectElement).value || '')"
         >
           <option value="" disabled selected>{{ t('message.sort by') }}</option>
@@ -85,19 +85,19 @@ watchDebounced(
           <option value="byPopulationDensity">{{ t('message.by population density') }}</option>
         </select>
         <input
-          class="w-52 h-9 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
+          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
           :placeholder="t('message.by name')"
           v-model="filterByNameInput"
         />
       </div>
       <div class="flex gap-3">
         <input
-          class="w-52 h-9 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
+          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
           :placeholder="t('message.by continent')"
           v-model="filterByRegionInput"
         />
         <input
-          class="w-52 h-9 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
+          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
           :placeholder="t('message.by language')"
           v-model="filterByLanguageInput"
         />

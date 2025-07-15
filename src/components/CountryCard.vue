@@ -69,7 +69,7 @@ function toggleFavorite() {
       <div class="flex flex-col">
         <div class="flex-1"></div>
         <img
-          class="w-12 h-12 cursor-pointer transition hover:scale-110 active:scale-90"
+          class="w-8 h-8 cursor-pointer transition hover:scale-110 active:scale-90"
           :src="isFavorite ? '/favorite.png' : '/unfavorite.png'"
           :alt="isFavorite ? t('message.unfavorite') : t('message.favorite')"
           @click="toggleFavorite"
