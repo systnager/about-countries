@@ -1,17 +1,24 @@
 <script setup lang="ts">
+import { type Country } from '@/types/Countries'
 import CountryCard from '@/components/CountryCard.vue'
+defineProps({
+  countries: {
+    type: Array<Country>,
+    required: true,
+  },
+})
 </script>
 <template>
-  <div class="grid col-auto gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 m-5">
+  <div class="grid col-auto gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 m-3">
     <CountryCard
-      v-for="i in 30"
-      :key="i"
-      :area="123465"
-      flagUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/1280px-Flag_of_Ukraine.svg.png"
-      lang="lang"
-      name="name"
-      :population="12345"
-      region="region"
+      v-for="country in countries"
+      :key="country.name.official"
+      :area="country.area"
+      :flagUrl="country.flags.png"
+      :lang="Object.values(country.languages).join(', ')"
+      :name="country.name.official"
+      :population="country.population"
+      :region="country.region"
     />
   </div>
 </template>

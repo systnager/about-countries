@@ -43,32 +43,38 @@ function toggleFavorite() {
     class="flex flex-col bg-gray-200 dark:bg-gray-600 dark:text-white p-5 rounded-md hover:shadow-md"
   >
     <div
-      class="flex justify-center px-5 gap-5 transition hover:scale-105 active:scale-95 cursor-pointer"
+      class="flex justify-center gap-3 transition hover:scale-105 active:scale-95 cursor-pointer mx-auto"
     >
-      <img class="max-w-32 max-h-16 w-auto h-auto my-auto" :src="flagUrl" :alt="name" />
-      <span class="font-bold text-2xl my-auto">{{ name }}</span>
+      <img class="max-w-16 max-h-8 w-auto h-auto my-auto" :src="flagUrl" :alt="name" />
+      <span class="font-bold text-2xl text-center flex-1">{{ name }}</span>
     </div>
-    <div class="flex justify-between relative">
-      <div class="flex flex-col px-5 mt-5 flex-1">
-        <span
-          >{{ t('message.region') }}: <span class="italic">{{ region }}</span></span
-        >
-        <span
-          >{{ t('message.area') }}: <span class="italic">{{ area }}</span></span
-        >
-        <span
-          >{{ t('message.population') }}: <span class="italic">{{ population }}</span></span
-        >
-        <span
-          >{{ t('message.language') }}: <span class="italic">{{ lang }}</span></span
-        >
+    <div class="flex justify-between relative flex-1 mt-5">
+      <div class="flex flex-col flex-1">
+        <div class="flex-1"></div>
+        <div class="flex flex-col mr-5">
+          <span
+            >{{ t('message.region') }}: <span class="italic">{{ region }}</span></span
+          >
+          <span
+            >{{ t('message.area') }}: <span class="italic">{{ area }}</span></span
+          >
+          <span
+            >{{ t('message.population') }}: <span class="italic">{{ population }}</span></span
+          >
+          <span
+            >{{ t('message.language') }}: <span class="italic">{{ lang }}</span></span
+          >
+        </div>
       </div>
-      <img
-        class="absolute bottom-0 right-0 w-12 h-12 cursor-pointer transition hover:scale-110 active:scale-90"
-        :src="isFavorite ? '/favorite.png' : '/unfavorite.png'"
-        :alt="isFavorite ? t('message.unfavorite') : t('message.favorite')"
-        @click="toggleFavorite"
-      />
+      <div class="flex flex-col">
+        <div class="flex-1"></div>
+        <img
+          class="w-12 h-12 cursor-pointer transition hover:scale-110 active:scale-90"
+          :src="isFavorite ? '/favorite.png' : '/unfavorite.png'"
+          :alt="isFavorite ? t('message.unfavorite') : t('message.favorite')"
+          @click="toggleFavorite"
+        />
+      </div>
     </div>
   </div>
 </template>

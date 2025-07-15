@@ -20,13 +20,6 @@ const i18n = createI18n({
 })
 const app = createApp(App)
 
-console.log({
-  messages: {
-    urk: ukr,
-    eng: eng,
-  },
-})
-
 app.use(createPinia())
 app.use(router)
 app.use(i18n)

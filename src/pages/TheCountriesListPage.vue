@@ -1,8 +1,18 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import CountryCardList from '@/components/CountryCardList.vue'
+import { useCountries, fetchCountries } from '@/services/CountriesService'
+
+const { countries } = useCountries()
+
+onMounted(() => {
+  fetchCountries()
+  console.log(countries)
+})
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold text-center mt-10 mb-20 dark:text-white">Country List</h1>
-  <CountryCardList />
+  <div>
+    <CountryCardList :countries="countries" />
+  </div>
 </template>
