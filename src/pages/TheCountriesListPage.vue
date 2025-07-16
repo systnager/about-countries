@@ -12,6 +12,9 @@ import {
   filterCountries,
   getFilteredCountriesLength,
   getAFilteredCountries,
+  getFavoritedCountriesOfficialName,
+  removeFavoritedCountryOfficialName,
+  addFavoritedCountryOfficialName,
 } from '@/services/CountriesService'
 
 const { showLoader, hideLoader } = <loaderProvide>inject(LOADER_PROVIDER_KEY)
@@ -59,6 +62,14 @@ function onFilterCountries() {
   showFirstCountriesPage()
 }
 
+function onToggleFavoriteCountry(officialName: string) {
+  if (getFavoritedCountriesOfficialName()?.includes(officialName)) {
+    removeFavoritedCountryOfficialName(officialName)
+  } else {
+    addFavoritedCountryOfficialName(officialName)
+  }
+}
+
 function _filterCountries() {
   filterCountries(
     countryListViewRef.value?.filterByNameInput,
@@ -82,6 +93,7 @@ onMounted(async () => {
       ref="countryListViewRef"
       @sort-countries="onSortCountries"
       @filter-countries="onFilterCountries"
+      @toggle-favorite-country="onToggleFavoriteCountry"
       :countries="countries"
       :can-load-more="canLoadMore"
       :on-load-more="onLoadMore"

@@ -7,6 +7,12 @@ defineProps({
     required: true,
   },
 })
+
+const emit = defineEmits(['toggleFavoriteCountry'])
+
+function onToggleFavorite(officialName: string) {
+  emit('toggleFavoriteCountry', officialName)
+}
 </script>
 <template>
   <div class="grid col-auto gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 m-3">
@@ -19,6 +25,8 @@ defineProps({
       :name="country.name.official"
       :population="country.population"
       :region="country.region"
+      :isFavorite="country.isFavorite"
+      @toggle-favorite="onToggleFavorite(country.name.official)"
     />
   </div>
 </template>

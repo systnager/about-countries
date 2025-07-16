@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-defineProps({
+const props = defineProps({
   name: {
     type: String,
     required: true,
@@ -27,14 +27,21 @@ defineProps({
     type: String,
     required: true,
   },
+  isFavorite: {
+    type: Boolean,
+    required: true,
+  },
 })
 
-const isFavorite = ref(false)
+const emit = defineEmits(['toggleFavorite'])
+
+const _isFavorite = ref(props.isFavorite)
 
 const { t } = useI18n()
 
 function toggleFavorite() {
-  isFavorite.value = !isFavorite.value
+  _isFavorite.value = !_isFavorite.value
+  emit('toggleFavorite')
 }
 </script>
 
@@ -70,8 +77,8 @@ function toggleFavorite() {
         <div class="flex-1"></div>
         <img
           class="w-8 h-8 cursor-pointer transition hover:scale-110 active:scale-90"
-          :src="isFavorite ? '/favorite.png' : '/unfavorite.png'"
-          :alt="isFavorite ? t('message.unfavorite') : t('message.favorite')"
+          :src="_isFavorite ? '/favorite.png' : '/unfavorite.png'"
+          :alt="_isFavorite ? t('message.unfavorite') : t('message.favorite')"
           @click="toggleFavorite"
         />
       </div>

@@ -29,7 +29,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['sortCountries', 'filterCountries'])
+const emit = defineEmits(['sortCountries', 'filterCountries', 'toggleFavoriteCountry'])
 
 defineExpose({
   filterByNameInput: readonly(filterByNameInput),
@@ -48,6 +48,10 @@ function onSortCountries(value: string) {
   }
   emit('filterCountries')
   hideLoader()
+}
+
+function toggleFavoriteCountry(officialName: string) {
+  emit('toggleFavoriteCountry', officialName)
 }
 
 useInfiniteScroll(
@@ -103,6 +107,6 @@ watchDebounced(
         />
       </div>
     </div>
-    <CountryCardList :countries="countries" />
+    <CountryCardList :countries="countries" @toggle-favorite-country="toggleFavoriteCountry" />
   </div>
 </template>

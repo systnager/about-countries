@@ -11,4 +11,5 @@ export type Country = {
   languages: {
     [key: string]: string
   }
+  isFavorite: boolean
 }
