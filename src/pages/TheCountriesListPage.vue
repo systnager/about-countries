@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { watchDebounced } from '@vueuse/core'
+import { watchDebounced, useInfiniteScroll } from '@vueuse/core'
 import type { Country } from '@/types/Countries'
 import { useI18n } from 'vue-i18n'
 import CountryCardList from '@/components/CountryCardList.vue'
@@ -19,9 +19,11 @@ import {
 const { t } = useI18n()
 const { countries } = useCountries()
 
+const pageSize = 16
+const currentPage = ref(1)
 const isLoading = ref(false)
-
 const filteredCountries = ref<Country[]>([])
+const allFilteredCountries = ref<Country[]>([])
 
 const filterByNameInput = ref<string>('')
 const filterByRegionInput = ref<string>('')
@@ -42,25 +44,27 @@ function onSortCountries(value: string) {
 
 function filterCountries() {
   showLoader()
-  filteredCountries.value = countries.value
+  allFilteredCountries.value = countries.value
   if (filterByNameInput.value) {
-    filteredCountries.value = filterCountriesByName(
-      filteredCountries.value,
+    allFilteredCountries.value = filterCountriesByName(
+      allFilteredCountries.value,
       filterByNameInput.value,
     )
   }
   if (filterByRegionInput.value) {
-    filteredCountries.value = filterCountriesByRegion(
-      filteredCountries.value,
+    allFilteredCountries.value = filterCountriesByRegion(
+      allFilteredCountries.value,
       filterByRegionInput.value,
     )
   }
   if (filterByLanguageInput.value) {
-    filteredCountries.value = filterCountriesByLanguage(
-      filteredCountries.value,
+    allFilteredCountries.value = filterCountriesByLanguage(
+      allFilteredCountries.value,
       filterByLanguageInput.value,
     )
   }
+  currentPage.value = 1
+  filteredCountries.value = allFilteredCountries.value.slice(0, pageSize)
   hideLoader()
 }
 
@@ -74,10 +78,27 @@ function hideLoader() {
   }, 1000)
 }
 
+function onLoadMore() {
+  showLoader()
+  const nextPage = currentPage.value + 1
+  const nextItems = allFilteredCountries.value.slice(0, nextPage * pageSize)
+  if (nextItems.length > filteredCountries.value.length) {
+    filteredCountries.value = nextItems
+    currentPage.value = nextPage
+  }
+  hideLoader()
+}
+
+function canLoadMore(): boolean {
+  return filteredCountries.value.length < allFilteredCountries.value.length
+}
+
 onMounted(async () => {
   showLoader()
   await fetchCountries()
-  filteredCountries.value = countries.value
+  if (countries.value.length) {
+    filterCountries()
+  }
   hideLoader()
 })
 
@@ -87,6 +108,16 @@ watchDebounced(
     filterCountries()
   },
   { debounce: 500 },
+)
+
+useInfiniteScroll(
+  window,
+  () => {
+    if (!isLoading.value && canLoadMore()) {
+      onLoadMore()
+    }
+  },
+  { distance: 200 },
 )
 </script>
 
@@ -123,6 +154,8 @@ watchDebounced(
         />
       </div>
     </div>
-    <CountryCardList :countries="filteredCountries" />
+    <div>
+      <CountryCardList :countries="filteredCountries" />
+    </div>
   </div>
 </template>
