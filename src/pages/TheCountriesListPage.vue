@@ -5,7 +5,6 @@ import type { loaderProvide } from '@/types/Loader'
 import { LOADER_PROVIDER_KEY } from '@/keys'
 import CountryListView from '@/components/CountryListView.vue'
 import {
-  useCountries,
   fetchCountries,
   sortCountriesByPopulation,
   sortCountriesByArea,
@@ -17,14 +16,13 @@ import {
 
 const { showLoader, hideLoader } = <loaderProvide>inject(LOADER_PROVIDER_KEY)
 const countryListViewRef = ref<typeof CountryListView>()
-const { countries } = useCountries()
 
-const pageSize = 16
+const countries = ref<Country[]>([])
 const currentPage = ref(1)
-const filteredCountries = ref<Country[]>([])
+const pageSize = 16
 
 function showFirstCountriesPage() {
-  filteredCountries.value = []
+  countries.value = []
   currentPage.value = 1
   onLoadMore()
 }
@@ -33,15 +31,15 @@ function onLoadMore() {
   showLoader()
   const nextPage = currentPage.value + 1
   const nextItems = getAFilteredCountries(0, nextPage * pageSize)
-  if (nextItems.length > filteredCountries.value.length) {
-    filteredCountries.value = nextItems
+  if (nextItems.length > countries.value.length) {
+    countries.value = nextItems
     currentPage.value = nextPage
   }
   hideLoader()
 }
 
 function canLoadMore(): boolean {
-  return filteredCountries.value.length < getFilteredCountriesLength()
+  return countries.value.length < getFilteredCountriesLength()
 }
 
 function onSortCountries(type: string) {
@@ -52,33 +50,27 @@ function onSortCountries(type: string) {
   } else if (type === 'byPopulationDensity') {
     sortCountriesByPopulationDensity()
   }
-  filterCountries(
-    countryListViewRef.value?.filterByNameInput,
-    countryListViewRef.value?.filterByRegionInput,
-    countryListViewRef.value?.filterByLanguageInput,
-  )
+  _filterCountries()
   showFirstCountriesPage()
 }
 
 function onFilterCountries() {
+  _filterCountries()
+  showFirstCountriesPage()
+}
+
+function _filterCountries() {
   filterCountries(
     countryListViewRef.value?.filterByNameInput,
     countryListViewRef.value?.filterByRegionInput,
     countryListViewRef.value?.filterByLanguageInput,
   )
-  showFirstCountriesPage()
 }
 
 onMounted(async () => {
   showLoader()
   await fetchCountries()
-  if (countries.value.length) {
-    filterCountries(
-      countryListViewRef.value?.filterByNameInput,
-      countryListViewRef.value?.filterByRegionInput,
-      countryListViewRef.value?.filterByLanguageInput,
-    )
-  }
+  _filterCountries()
   showFirstCountriesPage()
   hideLoader()
 })
@@ -90,7 +82,7 @@ onMounted(async () => {
       ref="countryListViewRef"
       @sort-countries="onSortCountries"
       @filter-countries="onFilterCountries"
-      :countries="filteredCountries"
+      :countries="countries"
       :can-load-more="canLoadMore"
       :on-load-more="onLoadMore"
     />
