@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, inject } from 'vue'
-import { watchDebounced, useInfiniteScroll } from '@vueuse/core'
 import type { Country } from '@/types/Countries'
 import type { loaderProvide } from '@/types/Loader'
-import { useI18n } from 'vue-i18n'
-import CountryCardList from '@/components/CountryCardList.vue'
+import { LOADER_PROVIDER_KEY } from '@/keys'
+import CountryListView from '@/components/CountryListView.vue'
 import {
   useCountries,
   fetchCountries,
@@ -16,38 +15,18 @@ import {
   getAFilteredCountries,
 } from '@/services/CountriesService'
 
-import { LOADER_PROVIDER_KEY } from '@/keys'
-
-const { t } = useI18n()
+const { showLoader, hideLoader } = <loaderProvide>inject(LOADER_PROVIDER_KEY)
+const countryListViewRef = ref<typeof CountryListView>()
 const { countries } = useCountries()
-const { showLoader, hideLoader, isLoading } = <loaderProvide>inject(LOADER_PROVIDER_KEY)
 
 const pageSize = 16
 const currentPage = ref(1)
 const filteredCountries = ref<Country[]>([])
 
-const filterByNameInput = ref<string>('')
-const filterByRegionInput = ref<string>('')
-const filterByLanguageInput = ref<string>('')
-
 function showFirstCountriesPage() {
   filteredCountries.value = []
   currentPage.value = 1
   onLoadMore()
-}
-
-function onSortCountries(value: string) {
-  showLoader()
-  if (value === 'byPopulation') {
-    sortCountriesByPopulation()
-  } else if (value === 'byArea') {
-    sortCountriesByArea()
-  } else if (value === 'byPopulationDensity') {
-    sortCountriesByPopulationDensity()
-  }
-  filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
-  showFirstCountriesPage()
-  hideLoader()
 }
 
 function onLoadMore() {
@@ -65,68 +44,55 @@ function canLoadMore(): boolean {
   return filteredCountries.value.length < getFilteredCountriesLength()
 }
 
+function onSortCountries(type: string) {
+  if (type === 'byPopulation') {
+    sortCountriesByPopulation()
+  } else if (type === 'byArea') {
+    sortCountriesByArea()
+  } else if (type === 'byPopulationDensity') {
+    sortCountriesByPopulationDensity()
+  }
+  filterCountries(
+    countryListViewRef.value?.filterByNameInput,
+    countryListViewRef.value?.filterByRegionInput,
+    countryListViewRef.value?.filterByLanguageInput,
+  )
+  showFirstCountriesPage()
+}
+
+function onFilterCountries() {
+  filterCountries(
+    countryListViewRef.value?.filterByNameInput,
+    countryListViewRef.value?.filterByRegionInput,
+    countryListViewRef.value?.filterByLanguageInput,
+  )
+  showFirstCountriesPage()
+}
+
 onMounted(async () => {
   showLoader()
   await fetchCountries()
   if (countries.value.length) {
-    filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
+    filterCountries(
+      countryListViewRef.value?.filterByNameInput,
+      countryListViewRef.value?.filterByRegionInput,
+      countryListViewRef.value?.filterByLanguageInput,
+    )
   }
   showFirstCountriesPage()
   hideLoader()
 })
-
-watchDebounced(
-  [filterByNameInput, filterByRegionInput, filterByLanguageInput],
-  () => {
-    filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
-    showFirstCountriesPage()
-  },
-  { debounce: 250 },
-)
-
-useInfiniteScroll(
-  window,
-  () => {
-    if (!isLoading.value && canLoadMore()) {
-      onLoadMore()
-    }
-  },
-  { distance: 200 },
-)
 </script>
 
 <template>
   <div>
-    <div class="flex justify-between m-5">
-      <div class="flex gap-3">
-        <select
-          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md cursor-pointer truncate"
-          @change="onSortCountries(($event.target as HTMLSelectElement).value || '')"
-        >
-          <option value="" disabled selected>{{ t('message.sort by') }}</option>
-          <option value="byPopulation">{{ t('message.by population') }}</option>
-          <option value="byArea">{{ t('message.by area') }}</option>
-          <option value="byPopulationDensity">{{ t('message.by population density') }}</option>
-        </select>
-        <input
-          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
-          :placeholder="t('message.by name')"
-          v-model="filterByNameInput"
-        />
-      </div>
-      <div class="flex gap-3">
-        <input
-          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
-          :placeholder="t('message.by continent')"
-          v-model="filterByRegionInput"
-        />
-        <input
-          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
-          :placeholder="t('message.by language')"
-          v-model="filterByLanguageInput"
-        />
-      </div>
-    </div>
-    <CountryCardList :countries="filteredCountries" />
+    <CountryListView
+      ref="countryListViewRef"
+      @sort-countries="onSortCountries"
+      @filter-countries="onFilterCountries"
+      :countries="filteredCountries"
+      :can-load-more="canLoadMore"
+      :on-load-more="onLoadMore"
+    />
   </div>
 </template>
