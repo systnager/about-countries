@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { watchDebounced, useInfiniteScroll } from '@vueuse/core'
 import type { Country } from '@/types/Countries'
+import type { loaderProvide } from '@/types/Loader'
 import { useI18n } from 'vue-i18n'
 import CountryCardList from '@/components/CountryCardList.vue'
-import WaitLoader from '@/components/WaitLoader.vue'
 import {
   useCountries,
   fetchCountries,
@@ -16,12 +16,14 @@ import {
   getAFilteredCountries,
 } from '@/services/CountriesService'
 
+import { LOADER_PROVIDER_KEY } from '@/keys'
+
 const { t } = useI18n()
 const { countries } = useCountries()
+const { showLoader, hideLoader, isLoading } = <loaderProvide>inject(LOADER_PROVIDER_KEY)
 
 const pageSize = 16
 const currentPage = ref(1)
-const isLoading = ref(false)
 const filteredCountries = ref<Country[]>([])
 
 const filterByNameInput = ref<string>('')
@@ -39,16 +41,6 @@ function onSortCountries(value: string) {
   }
   filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
   hideLoader()
-}
-
-function showLoader() {
-  isLoading.value = true
-}
-
-function hideLoader() {
-  setTimeout(() => {
-    isLoading.value = false
-  }, 1000)
 }
 
 function onLoadMore() {
@@ -96,7 +88,6 @@ useInfiniteScroll(
 
 <template>
   <div>
-    <WaitLoader v-if="isLoading" />
     <div class="flex justify-between m-5">
       <div class="flex gap-3">
         <select
