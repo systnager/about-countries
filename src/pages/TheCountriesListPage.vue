@@ -30,6 +30,12 @@ const filterByNameInput = ref<string>('')
 const filterByRegionInput = ref<string>('')
 const filterByLanguageInput = ref<string>('')
 
+function showFirstCountriesPage() {
+  filteredCountries.value = []
+  currentPage.value = 1
+  onLoadMore()
+}
+
 function onSortCountries(value: string) {
   showLoader()
   if (value === 'byPopulation') {
@@ -40,6 +46,7 @@ function onSortCountries(value: string) {
     sortCountriesByPopulationDensity()
   }
   filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
+  showFirstCountriesPage()
   hideLoader()
 }
 
@@ -64,6 +71,7 @@ onMounted(async () => {
   if (countries.value.length) {
     filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
   }
+  showFirstCountriesPage()
   hideLoader()
 })
 
@@ -71,6 +79,7 @@ watchDebounced(
   [filterByNameInput, filterByRegionInput, filterByLanguageInput],
   () => {
     filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
+    showFirstCountriesPage()
   },
   { debounce: 250 },
 )
