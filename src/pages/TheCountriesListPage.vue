@@ -11,9 +11,9 @@ import {
   sortCountriesByPopulation,
   sortCountriesByArea,
   sortCountriesByPopulationDensity,
-  filterCountriesByName,
-  filterCountriesByRegion,
-  filterCountriesByLanguage,
+  filterCountries,
+  getFilteredCountriesLength,
+  getAFilteredCountries,
 } from '@/services/CountriesService'
 
 const { t } = useI18n()
@@ -23,7 +23,6 @@ const pageSize = 16
 const currentPage = ref(1)
 const isLoading = ref(false)
 const filteredCountries = ref<Country[]>([])
-const allFilteredCountries = ref<Country[]>([])
 
 const filterByNameInput = ref<string>('')
 const filterByRegionInput = ref<string>('')
@@ -38,33 +37,7 @@ function onSortCountries(value: string) {
   } else if (value === 'byPopulationDensity') {
     sortCountriesByPopulationDensity()
   }
-  filterCountries()
-  hideLoader()
-}
-
-function filterCountries() {
-  showLoader()
-  allFilteredCountries.value = countries.value
-  if (filterByNameInput.value) {
-    allFilteredCountries.value = filterCountriesByName(
-      allFilteredCountries.value,
-      filterByNameInput.value,
-    )
-  }
-  if (filterByRegionInput.value) {
-    allFilteredCountries.value = filterCountriesByRegion(
-      allFilteredCountries.value,
-      filterByRegionInput.value,
-    )
-  }
-  if (filterByLanguageInput.value) {
-    allFilteredCountries.value = filterCountriesByLanguage(
-      allFilteredCountries.value,
-      filterByLanguageInput.value,
-    )
-  }
-  currentPage.value = 1
-  filteredCountries.value = allFilteredCountries.value.slice(0, pageSize)
+  filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
   hideLoader()
 }
 
@@ -81,7 +54,7 @@ function hideLoader() {
 function onLoadMore() {
   showLoader()
   const nextPage = currentPage.value + 1
-  const nextItems = allFilteredCountries.value.slice(0, nextPage * pageSize)
+  const nextItems = getAFilteredCountries(0, nextPage * pageSize)
   if (nextItems.length > filteredCountries.value.length) {
     filteredCountries.value = nextItems
     currentPage.value = nextPage
@@ -90,14 +63,14 @@ function onLoadMore() {
 }
 
 function canLoadMore(): boolean {
-  return filteredCountries.value.length < allFilteredCountries.value.length
+  return filteredCountries.value.length < getFilteredCountriesLength()
 }
 
 onMounted(async () => {
   showLoader()
   await fetchCountries()
   if (countries.value.length) {
-    filterCountries()
+    filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
   }
   hideLoader()
 })
@@ -105,9 +78,9 @@ onMounted(async () => {
 watchDebounced(
   [filterByNameInput, filterByRegionInput, filterByLanguageInput],
   () => {
-    filterCountries()
+    filterCountries(filterByNameInput.value, filterByRegionInput.value, filterByLanguageInput.value)
   },
-  { debounce: 500 },
+  { debounce: 250 },
 )
 
 useInfiniteScroll(
@@ -154,8 +127,6 @@ useInfiniteScroll(
         />
       </div>
     </div>
-    <div>
-      <CountryCardList :countries="filteredCountries" />
-    </div>
+    <CountryCardList :countries="filteredCountries" />
   </div>
 </template>
