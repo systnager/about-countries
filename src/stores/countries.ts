@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, readonly } from 'vue'
 import axios from 'axios'
 
 import { type Country } from '@/types/Countries'
@@ -9,13 +9,6 @@ import { FAVORITE_COUNTRIES_OFFICIAL_NAMES_TTL } from '@/constants'
 
 export const useCountriesStore = defineStore('countries', () => {
   const countries = ref<Country[]>([])
-  const allFilteredCountries = ref<Country[]>([])
-
-  function useCountries() {
-    return {
-      countries,
-    }
-  }
 
   async function fetchCountries() {
     try {
@@ -33,15 +26,19 @@ export const useCountriesStore = defineStore('countries', () => {
   }
 
   function sortCountriesByPopulation() {
-    countries.value.sort((a: Country, b: Country) => b.population - a.population)
+    countries.value = [...countries.value].sort(
+      (a: Country, b: Country) => b.population - a.population,
+    )
   }
 
   function sortCountriesByArea() {
-    countries.value.sort((a: Country, b: Country) => b.area - a.area)
+    countries.value = [...countries.value].sort((a: Country, b: Country) => b.area - a.area)
   }
 
   function sortCountriesByPopulationDensity() {
-    countries.value.sort((a: Country, b: Country) => b.population / b.area - a.population / a.area)
+    countries.value = [...countries.value].sort(
+      (a: Country, b: Country) => b.population / b.area - a.population / a.area,
+    )
   }
 
   function filterCountriesByRegion(countries: Country[], region: string) {
@@ -68,27 +65,17 @@ export const useCountriesStore = defineStore('countries', () => {
   }
 
   function filterCountries(nameQuery = '', regionQuery = '', languageQuery = '') {
-    allFilteredCountries.value = countries.value
+    let _countries = countries.value
     if (nameQuery) {
-      allFilteredCountries.value = filterCountriesByName(allFilteredCountries.value, nameQuery)
+      _countries = filterCountriesByName(_countries, nameQuery)
     }
     if (regionQuery) {
-      allFilteredCountries.value = filterCountriesByRegion(allFilteredCountries.value, regionQuery)
+      _countries = filterCountriesByRegion(_countries, regionQuery)
     }
     if (languageQuery) {
-      allFilteredCountries.value = filterCountriesByLanguage(
-        allFilteredCountries.value,
-        languageQuery,
-      )
+      _countries = filterCountriesByLanguage(_countries, languageQuery)
     }
-  }
-
-  function getAFilteredCountries(from = 0, to = 0) {
-    return allFilteredCountries.value.slice(from, to)
-  }
-
-  function getFilteredCountriesLength() {
-    return allFilteredCountries.value.length
+    return _countries
   }
 
   function getFavoritedCountriesOfficialName() {
@@ -104,7 +91,6 @@ export const useCountriesStore = defineStore('countries', () => {
       FAVORITE_COUNTRIES_OFFICIAL_NAMES_TTL,
     )
     toogleFavoriteCountries(name)
-    toogleAllFilteredCountriesFavorite(name)
   }
 
   function removeFavoritedCountryOfficialName(name: string) {
@@ -120,7 +106,6 @@ export const useCountriesStore = defineStore('countries', () => {
       removeItem(FAVORITE_COUNTRIES_OFFICIAL_NAMES_LOCAL_STORAGE_KEY)
     }
     toogleFavoriteCountries(name)
-    toogleAllFilteredCountriesFavorite(name)
   }
 
   function toogleFavoriteCountries(officialName: string) {
@@ -131,16 +116,8 @@ export const useCountriesStore = defineStore('countries', () => {
     })
   }
 
-  function toogleAllFilteredCountriesFavorite(officialName: string) {
-    allFilteredCountries.value.forEach((country: Country) => {
-      if (officialName === country.name.official) {
-        country.isFavorite = !country.isFavorite
-      }
-    })
-  }
-
   return {
-    useCountries,
+    countries: readonly(countries),
     fetchCountries,
     sortCountriesByPopulation,
     sortCountriesByArea,
@@ -148,8 +125,6 @@ export const useCountriesStore = defineStore('countries', () => {
     filterCountriesByRegion,
     filterCountriesByLanguage,
     filterCountriesByName,
-    getAFilteredCountries,
-    getFilteredCountriesLength,
     getFavoritedCountriesOfficialName,
     addFavoritedCountryOfficialName,
     removeFavoritedCountryOfficialName,

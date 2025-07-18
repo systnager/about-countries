@@ -10,6 +10,7 @@ const { showLoader, hideLoader } = <loaderProvide>inject(LOADER_PROVIDER_KEY)
 const countryListViewRef = ref<typeof CountryListView>()
 const countriesStore = useCountriesStore()
 const countries = ref<Country[]>([])
+const filteredCountries = ref<Country[]>([])
 const currentPage = ref(1)
 const pageSize = 16
 
@@ -22,7 +23,7 @@ function showFirstCountriesPage() {
 function onLoadMore() {
   showLoader()
   const nextPage = currentPage.value + 1
-  const nextItems = countriesStore.getAFilteredCountries(0, nextPage * pageSize)
+  const nextItems = filteredCountries.value.slice(0, nextPage * pageSize)
   if (nextItems.length > countries.value.length) {
     countries.value = nextItems
     currentPage.value = nextPage
@@ -31,10 +32,11 @@ function onLoadMore() {
 }
 
 function canLoadMore(): boolean {
-  return countries.value.length < countriesStore.getFilteredCountriesLength()
+  return countries.value.length < countriesStore.countries.length
 }
 
 function onSortCountries(type: string) {
+  showLoader()
   if (type === 'byPopulation') {
     countriesStore.sortCountriesByPopulation()
   } else if (type === 'byArea') {
@@ -44,11 +46,14 @@ function onSortCountries(type: string) {
   }
   _filterCountries()
   showFirstCountriesPage()
+  hideLoader()
 }
 
 function onFilterCountries() {
+  showLoader()
   _filterCountries()
   showFirstCountriesPage()
+  hideLoader()
 }
 
 function onToggleFavoriteCountry(officialName: string) {
@@ -60,11 +65,13 @@ function onToggleFavoriteCountry(officialName: string) {
 }
 
 function _filterCountries() {
-  countriesStore.filterCountries(
+  filteredCountries.value = countriesStore.filterCountries(
     countryListViewRef.value?.filterByNameInput,
     countryListViewRef.value?.filterByRegionInput,
     countryListViewRef.value?.filterByLanguageInput,
   )
+
+  console.log(filteredCountries.value)
 }
 
 onMounted(async () => {
