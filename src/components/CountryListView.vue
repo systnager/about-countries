@@ -46,7 +46,6 @@ function onSortCountries(value: string) {
   } else if (value === 'byPopulationDensity') {
     emit('sortCountries', 'byPopulationDensity')
   }
-  emit('filterCountries')
   hideLoader()
 }
 

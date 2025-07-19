@@ -9,49 +9,54 @@ import { useCountriesStore } from '@/stores/countries'
 const { showLoader, hideLoader } = <loaderProvide>inject(LOADER_PROVIDER_KEY)
 const countryListViewRef = ref<typeof CountryListView>()
 const countriesStore = useCountriesStore()
-const countries = ref<Country[]>([])
-const filteredCountries = ref<Country[]>([])
-const currentPage = ref(1)
+const showedCountries = ref<Country[]>([])
+const allCountries = ref<Country[]>([])
+let currentPage = 1
 const pageSize = 16
 
 function showFirstCountriesPage() {
-  countries.value = []
-  currentPage.value = 1
+  showedCountries.value = []
+  currentPage = 1
   onLoadMore()
 }
 
 function onLoadMore() {
   showLoader()
-  const nextPage = currentPage.value + 1
-  const nextItems = filteredCountries.value.slice(0, nextPage * pageSize)
-  if (nextItems.length > countries.value.length) {
-    countries.value = nextItems
-    currentPage.value = nextPage
+  const nextPage = currentPage + 1
+  const nextItems = allCountries.value.slice(0, nextPage * pageSize)
+  if (nextItems.length > showedCountries.value.length) {
+    showedCountries.value = nextItems
+    currentPage = nextPage
   }
   hideLoader()
 }
 
 function canLoadMore(): boolean {
-  return countries.value.length < countriesStore.countries.length
+  return showedCountries.value.length < allCountries.value.length
 }
 
 function onSortCountries(type: string) {
   showLoader()
+  onFilterCountries()
   if (type === 'byPopulation') {
-    countriesStore.sortCountriesByPopulation()
+    allCountries.value = countriesStore.sortCountriesByPopulation(allCountries.value)
   } else if (type === 'byArea') {
-    countriesStore.sortCountriesByArea()
+    allCountries.value = countriesStore.sortCountriesByArea(allCountries.value)
   } else if (type === 'byPopulationDensity') {
-    countriesStore.sortCountriesByPopulationDensity()
+    allCountries.value = countriesStore.sortCountriesByPopulationDensity(allCountries.value)
   }
-  _filterCountries()
   showFirstCountriesPage()
   hideLoader()
 }
 
 function onFilterCountries() {
   showLoader()
-  _filterCountries()
+  allCountries.value = countriesStore.filterCountries(
+    countryListViewRef.value?.filterByNameInput,
+    countryListViewRef.value?.filterByRegionInput,
+    countryListViewRef.value?.filterByLanguageInput,
+    [...countriesStore.countries],
+  )
   showFirstCountriesPage()
   hideLoader()
 }
@@ -64,20 +69,10 @@ function onToggleFavoriteCountry(officialName: string) {
   }
 }
 
-function _filterCountries() {
-  filteredCountries.value = countriesStore.filterCountries(
-    countryListViewRef.value?.filterByNameInput,
-    countryListViewRef.value?.filterByRegionInput,
-    countryListViewRef.value?.filterByLanguageInput,
-  )
-
-  console.log(filteredCountries.value)
-}
-
 onMounted(async () => {
   showLoader()
   await countriesStore.fetchCountries()
-  _filterCountries()
+  allCountries.value = [...countriesStore.countries]
   showFirstCountriesPage()
   hideLoader()
 })
@@ -90,7 +85,7 @@ onMounted(async () => {
       @sort-countries="onSortCountries"
       @filter-countries="onFilterCountries"
       @toggle-favorite-country="onToggleFavoriteCountry"
-      :countries="countries"
+      :countries="showedCountries"
       :can-load-more="canLoadMore"
       :on-load-more="onLoadMore"
     />

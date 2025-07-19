@@ -25,20 +25,16 @@ export const useCountriesStore = defineStore('countries', () => {
     }
   }
 
-  function sortCountriesByPopulation() {
-    countries.value = [...countries.value].sort(
-      (a: Country, b: Country) => b.population - a.population,
-    )
+  function sortCountriesByPopulation(countries: Country[]) {
+    return countries.sort((a: Country, b: Country) => b.population - a.population)
   }
 
-  function sortCountriesByArea() {
-    countries.value = [...countries.value].sort((a: Country, b: Country) => b.area - a.area)
+  function sortCountriesByArea(countries: Country[]) {
+    return countries.sort((a: Country, b: Country) => b.area - a.area)
   }
 
-  function sortCountriesByPopulationDensity() {
-    countries.value = [...countries.value].sort(
-      (a: Country, b: Country) => b.population / b.area - a.population / a.area,
-    )
+  function sortCountriesByPopulationDensity(countries: Country[]) {
+    return countries.sort((a: Country, b: Country) => b.population / b.area - a.population / a.area)
   }
 
   function filterCountriesByRegion(countries: Country[], region: string) {
@@ -64,18 +60,22 @@ export const useCountriesStore = defineStore('countries', () => {
     )
   }
 
-  function filterCountries(nameQuery = '', regionQuery = '', languageQuery = '') {
-    let _countries = countries.value
+  function filterCountries(
+    nameQuery = '',
+    regionQuery = '',
+    languageQuery = '',
+    countries: Country[] = [],
+  ) {
     if (nameQuery) {
-      _countries = filterCountriesByName(_countries, nameQuery)
+      countries = filterCountriesByName(countries, nameQuery)
     }
     if (regionQuery) {
-      _countries = filterCountriesByRegion(_countries, regionQuery)
+      countries = filterCountriesByRegion(countries, regionQuery)
     }
     if (languageQuery) {
-      _countries = filterCountriesByLanguage(_countries, languageQuery)
+      countries = filterCountriesByLanguage(countries, languageQuery)
     }
-    return _countries
+    return countries
   }
 
   function getFavoritedCountriesOfficialName() {
