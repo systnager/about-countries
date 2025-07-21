@@ -1,52 +1,70 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useCountryStore } from '@/stores/country'
+import { onMounted } from 'vue'
+import { ref } from 'vue'
+import type { Country } from '@/types/Countries'
+import { useCountriesStore } from '@/stores/countries'
 
 const route = useRoute()
 const { t } = useI18n()
-const countryCode = route.params.code
+const countryStore = useCountryStore()
+const countriesStore = useCountriesStore()
+const country = ref({} as Country)
+const relationCountries = ref([] as Country[])
+
+onMounted(async () => {
+  countriesStore.fetchCountries()
+  country.value = await countryStore.fetchCountry(route.params.code as string)
+  relationCountries.value = countriesStore.getRelationCountries(
+    Object.values(country.value.languages),
+    country.value.region,
+  )
+})
 </script>
 
 <template>
-  {{ countryCode }}
   <div class="text-gray dark:text-white px-15 py-10">
     <div class="flex flex-col gap-3">
       <div class="flex justify-between gap-3 bg-gray-200 dark:bg-gray-600 p-5 rounded-md">
         <div class="flex flex-col my-auto">
-          <h2>{{ t('message.name') }}: <i>Ukraine</i></h2>
-          <span>{{ t('message.capital') }}: <i>Kyiv</i></span>
-          <span>{{ t('message.population') }}: <i>44 000 000</i></span>
-          <span>{{ t('message.area') }}: <i>603 628</i></span>
+          <h2>
+            {{ t('message.name') }}: <i>{{ country.name?.official }}</i>
+          </h2>
+          <span
+            >{{ t('message.capital') }}: <i>{{ country.capital?.join(', ') }}</i></span
+          >
+          <span
+            >{{ t('message.population') }}: <i>{{ country.population }}</i></span
+          >
+          <span
+            >{{ t('message.area') }}: <i>{{ country.area }}</i></span
+          >
         </div>
         <div>
-          <img
-            class="max-w-42 max-h-42"
-            src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg"
-          />
+          <img class="max-w-42 max-h-42" :src="country.flags?.png" />
         </div>
       </div>
       <div class="flex justify-between mt-15 bg-gray-200 dark:bg-gray-600 p-5 rounded-md">
         <span
           >{{ t('message.currencies') }}:
           <ul class="pl-5">
-            <li>Hryvnia</li>
-            <li>Hryvnia</li>
-            <li>Hryvnia</li>
+            <li v-for="currency in country.currencies" :key="currency.name">
+              {{ currency.symbol }} {{ currency.name }}
+            </li>
           </ul>
         </span>
         <span
           >{{ t('message.timezones') }}:
           <ul class="pl-5">
-            <li>UTC+2</li>
-            <li>UTC+2</li>
-            <li>UTC+2</li>
+            <li v-for="timezone in country.timezones" :key="timezone">{{ timezone }}</li>
           </ul></span
         >
         <span
           >{{ t('message.languages') }}:
           <ul class="pl-5">
-            <li>English</li>
-            <li>Ukrainian</li>
+            <li v-for="lang in country.languages" :key="lang">{{ lang }}</li>
           </ul></span
         >
       </div>
@@ -54,19 +72,24 @@ const countryCode = route.params.code
     <div class="mt-15">
       <h2>{{ t('message.related countries') }}:</h2>
       <div class="grid col-auto gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <div
-          v-for="i in 16"
-          :key="i"
-          class="flex justify-between bg-gray-200 dark:bg-gray-600 p-5 rounded-md hover:shadow-xl cursor-pointer transition hover:scale-105 active:scale-95"
-        >
-          <span>Ukraine</span>
-          <img
-            class="max-w-8 max-h-8"
-            src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg"
-          />
-        </div>
+        <a
+          v-for="relationCountry in relationCountries"
+          :key="relationCountry.name?.official"
+          class="flex justify-between items-center gap-3 bg-gray-200 dark:bg-gray-600 p-5 rounded-md hover:shadow-xl cursor-pointer transition hover:scale-105 active:scale-95"
+          :href="`/country/${relationCountry.ccn3}`"
+          ><span>{{ relationCountry.name?.official }}</span>
+          <img class="max-w-8 max-h-8" :src="relationCountry.flags?.png"
+        /></a>
       </div>
     </div>
-    <div class="mt-15 w-128 h-64 m-auto bg-black">GOOGLE MAPS</div>
+    <iframe
+      v-if="country.latlng"
+      class="mt-15 w-full h-120 rounded-md"
+      :src="`https://maps.google.com/maps?q=${country.latlng[0]},${country.latlng[1]}&z=5&output=embed`"
+      allowfullscreen="true"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    >
+    </iframe>
   </div>
 </template>

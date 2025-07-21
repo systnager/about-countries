@@ -13,7 +13,7 @@ export const useCountriesStore = defineStore('countries', () => {
   async function fetchCountries() {
     try {
       const { data } = await axios.get('https://restcountries.com/v3.1/all', {
-        params: { fields: 'flags,name,region,population,area,languages' },
+        params: { fields: 'flags,name,region,population,area,languages,ccn3' },
       })
       const favorite_countries_official_names = getFavoritedCountriesOfficialName() || []
       countries.value = data.map((country: Country) => ({
@@ -120,6 +120,30 @@ export const useCountriesStore = defineStore('countries', () => {
     return countries.value.filter((country: Country) => country.isFavorite)
   }
 
+  function getRelationCountriesByLanguages(languages: string[]) {
+    return countries.value.filter((country: Country) => {
+      for (const key in country.languages) {
+        if (languages.includes(country.languages[key])) {
+          return true
+        }
+      }
+      return false
+    })
+  }
+
+  function getRelationCountriesBySubRegion(subRegion: string) {
+    return countries.value.filter((country: Country) =>
+      country.region.toLowerCase().includes(subRegion.toLowerCase()),
+    )
+  }
+
+  function getRelationCountries(languages: string[], subRegion: string) {
+    return [
+      ...getRelationCountriesByLanguages(languages),
+      ...getRelationCountriesBySubRegion(subRegion),
+    ]
+  }
+
   return {
     countries: readonly(countries),
     fetchCountries,
@@ -134,5 +158,6 @@ export const useCountriesStore = defineStore('countries', () => {
     addFavoritedCountryOfficialName,
     removeFavoritedCountryOfficialName,
     filterCountries,
+    getRelationCountries,
   }
 })
