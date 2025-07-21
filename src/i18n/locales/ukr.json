@@ -20,6 +20,11 @@
     "sort by": "Сортувати за",
     "by name": "За назвою",
     "by continent": "За континентом",
-    "by language": "За мовою"
+    "by language": "За мовою",
+    "capital": "Столиця",
+    "currencies": "Валюти",
+    "languages": "Мови",
+    "timezones": "Часові пояси",
+    "related countries": "Пов'язані країни"
   }
 }
