@@ -31,6 +31,10 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  ccn3: {
+    type: String,
+    required: true,
+  },
 })
 
 const emit = defineEmits(['toggleFavorite'])
@@ -49,12 +53,13 @@ function toggleFavorite() {
   <div
     class="flex flex-col bg-gray-200 dark:bg-gray-600 dark:text-white p-5 rounded-md hover:shadow-md"
   >
-    <div
+    <a
+      :href="`/country/${ccn3}`"
       class="flex justify-center gap-3 transition hover:scale-105 active:scale-95 cursor-pointer mx-auto"
     >
       <img class="max-w-16 max-h-8 w-auto h-auto my-auto" :src="flagUrl" :alt="name" />
       <span class="font-bold text-2xl text-center flex-1">{{ name }}</span>
-    </div>
+    </a>
     <div class="flex justify-between relative flex-1 mt-5">
       <div class="flex flex-col flex-1">
         <div class="flex-1"></div>

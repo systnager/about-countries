@@ -26,6 +26,7 @@ function onToggleFavorite(officialName: string) {
       :population="country.population"
       :region="country.region"
       :isFavorite="country.isFavorite"
+      :ccn3="country.ccn3"
       @toggle-favorite="onToggleFavorite(country.name.official)"
     />
   </div>
