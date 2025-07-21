@@ -12,7 +12,7 @@ const countryCode = route.params.code
   <div class="text-gray dark:text-white px-15 py-10">
     <div class="flex flex-col gap-3">
       <div class="flex justify-between gap-3 bg-gray-200 dark:bg-gray-600 p-5 rounded-md">
-        <div class="flex flex-col">
+        <div class="flex flex-col my-auto">
           <h2>{{ t('message.name') }}: <i>Ukraine</i></h2>
           <span>{{ t('message.capital') }}: <i>Kyiv</i></span>
           <span>{{ t('message.population') }}: <i>44 000 000</i></span>
