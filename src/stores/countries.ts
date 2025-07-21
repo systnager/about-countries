@@ -116,6 +116,10 @@ export const useCountriesStore = defineStore('countries', () => {
     })
   }
 
+  function getFavoritedCountries() {
+    return countries.value.filter((country: Country) => country.isFavorite)
+  }
+
   return {
     countries: readonly(countries),
     fetchCountries,
@@ -126,6 +130,7 @@ export const useCountriesStore = defineStore('countries', () => {
     filterCountriesByLanguage,
     filterCountriesByName,
     getFavoritedCountriesOfficialName,
+    getFavoritedCountries,
     addFavoritedCountryOfficialName,
     removeFavoritedCountryOfficialName,
     filterCountries,
