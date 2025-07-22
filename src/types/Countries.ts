@@ -13,7 +13,7 @@ export type Country = {
   }
   isFavorite: boolean
   code: string
-  capital: Array<string>
+  capital: string[]
   currencies: {
     [key: string]: {
       symbol: string
