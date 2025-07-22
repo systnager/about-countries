@@ -31,15 +31,15 @@ onMounted(async () => {
   await countriesStore.getCountries()
   topCountriesByPopulationTableData.value = formatTopCountriesByPopulationTableData(
     countriesStore.getTopCountriesByPopulation(countriesStore.countries as Country[], 10),
-    ['№', 'message.name', 'message.population'],
+    ['message.№', 'message.name', 'message.population'],
   )
   topCountriesByAreaTableData.value = formatTopCountriesByAreaTableData(
     countriesStore.getTopCountriesByArea(countriesStore.countries as Country[], 10),
-    ['№', 'message.name', 'message.area'],
+    ['message.№', 'message.name', 'message.area'],
   )
   topCountriesByLanguagesCountTableData.value = formatTopCountriesByLanguagesCountTableData(
     countriesStore.getTopCountriesByLanguagesCount(countriesStore.countries as Country[], 10),
-    ['№', 'message.name', 'message.languages'],
+    ['message.№', 'message.name', 'message.languages'],
   )
 })
 </script>

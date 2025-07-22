@@ -8,7 +8,7 @@ export function formatTopCountriesByPopulationTableData(
   const data = countries.map((country: Country, index: number) => {
     return {
       id: index + 1,
-      data: [index + 1, `${country.flag}${country.name.official}`, country.population],
+      data: [index + 1, `${country.flag} ${country.name.official}`, country.population],
     }
   })
 
@@ -22,7 +22,7 @@ export function formatTopCountriesByAreaTableData(
   const data = countries.map((country: Country, index: number) => {
     return {
       id: index + 1,
-      data: [index + 1, `${country.flag}${country.name.official}`, country.area],
+      data: [index + 1, `${country.flag} ${country.name.official}`, country.area],
     }
   })
 
@@ -38,7 +38,7 @@ export function formatTopCountriesByLanguagesCountTableData(
       id: index + 1,
       data: [
         index + 1,
-        `${country.flag}${country.name.official}`,
+        `${country.flag} ${country.name.official}`,
         Object.keys(country.languages).length,
       ],
     }
