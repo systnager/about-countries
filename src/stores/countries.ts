@@ -143,6 +143,26 @@ export const useCountriesStore = defineStore('countries', () => {
     ]
   }
 
+  function getTopCountriesByPopulation(countries: Country[], count: number): Country[] {
+    const _countries = [...countries]
+    return _countries.sort((a: Country, b: Country) => b.population - a.population).slice(0, count)
+  }
+
+  function getTopCountriesByArea(countries: Country[], count: number): Country[] {
+    const _countries = [...countries]
+    return _countries.sort((a: Country, b: Country) => b.area - a.area).slice(0, count)
+  }
+
+  function getTopCountriesByLanguagesCount(countries: Country[], count: number): Country[] {
+    const _countries = [...countries]
+    return _countries
+      .sort(
+        (a: Country, b: Country) =>
+          Object.keys(b.languages).length - Object.keys(a.languages).length,
+      )
+      .slice(0, count)
+  }
+
   return {
     countries: readonly(countries),
     getCountries,
@@ -159,5 +179,8 @@ export const useCountriesStore = defineStore('countries', () => {
     removeFavoritedCountryOfficialName,
     filterCountries,
     getRelationCountries,
+    getTopCountriesByPopulation,
+    getTopCountriesByArea,
+    getTopCountriesByLanguagesCount,
   }
 })

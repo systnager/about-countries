@@ -2,6 +2,7 @@ export interface Country {
   flags: {
     png: string
   }
+  flag: string
   name: {
     official: string
   }
