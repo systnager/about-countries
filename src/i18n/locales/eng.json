@@ -14,9 +14,9 @@
     "favorite": "Add to favorites",
     "unfavorite": "Remove from favorites",
     "language": "Language",
-    "by population": "By population",
-    "by area": "By area",
-    "by population density": "By population density",
+    "by population": "by population",
+    "by area": "by area",
+    "by population density": "by population density",
     "sort by": "Sort by",
     "by name": "By name",
     "by continent": "By continent",
@@ -25,6 +25,8 @@
     "currencies": "Currencies",
     "languages": "Languages",
     "timezones": "Timezones",
-    "related countries": "Related countries"
+    "related countries": "Related countries",
+    "top 10 countries": "Top 10 countries",
+    "by languages count": "by languages count"
   }
 }

@@ -15,8 +15,8 @@
     "unfavorite": "Видалити з обраного",
     "language": "Мова",
     "by population": "за населенням",
-    "by area": "За площею",
-    "by population density": "За густотою населення",
+    "by area": "за площею",
+    "by population density": "за густотою населення",
     "sort by": "Сортувати за",
     "by name": "За назвою",
     "by continent": "За континентом",
@@ -25,6 +25,8 @@
     "currencies": "Валюти",
     "languages": "Мови",
     "timezones": "Часові пояси",
-    "related countries": "Пов'язані країни"
+    "related countries": "Пов'язані країни",
+    "top 10 countries": "Топ-10 країн",
+    "by languages count": "за кількістю мов"
   }
 }

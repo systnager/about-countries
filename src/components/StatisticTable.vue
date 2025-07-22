@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { TableData } from '@/types/Table'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 defineProps<{
   tableData: TableData
@@ -14,7 +16,7 @@ defineProps<{
           :key="header"
           class="first:whitespace-nowrap first:text-left first:pl-3 last:pr-3 last:whitespace-nowrap last:text-right"
         >
-          {{ header }}
+          {{ t(header) }}
         </th>
       </tr>
       <tr
