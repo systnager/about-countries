@@ -2,9 +2,16 @@ import { defineStore } from 'pinia'
 import { ref, readonly } from 'vue'
 
 import { type Country } from '@/types/Countries'
-import { FAVORITE_COUNTRIES_OFFICIAL_NAMES_LOCAL_STORAGE_KEY } from '@/keys'
+import {
+  FAVORITE_COUNTRIES_OFFICIAL_NAMES_LOCAL_STORAGE_KEY,
+  COUNTRIES_OFFICIAL_NAMES_LOCAL_STORAGE_KEY,
+} from '@/keys'
 import { setItemWithTTL, getItemWithTTL, removeItem } from '@/utils/localStorageTTL'
-import { FAVORITE_COUNTRIES_OFFICIAL_NAMES_TTL } from '@/constants'
+import {
+  FAVORITE_COUNTRIES_OFFICIAL_NAMES_TTL,
+  COUNTRIES_OFFICIAL_NAMES_TTL,
+  COUNTRY_OFFICIAL_NAMES_TTL,
+} from '@/constants'
 
 import { fetchCountries, fetchCountry } from '@/services/restcountries'
 
@@ -13,7 +20,12 @@ export const useCountriesStore = defineStore('countries', () => {
 
   async function getCountries() {
     const favorite_countries_official_names = getFavoritedCountriesOfficialName() || []
-    const data = await fetchCountries()
+    let data = getItemWithTTL(COUNTRIES_OFFICIAL_NAMES_LOCAL_STORAGE_KEY) as Country[]
+    if (!data) {
+      data = await fetchCountries()
+      setItemWithTTL(COUNTRIES_OFFICIAL_NAMES_LOCAL_STORAGE_KEY, data, COUNTRIES_OFFICIAL_NAMES_TTL)
+    }
+
     countries.value = data.map((country: Country) => ({
       ...country,
       isFavorite: favorite_countries_official_names.includes(country.name.official),
@@ -21,7 +33,12 @@ export const useCountriesStore = defineStore('countries', () => {
   }
 
   async function getCountryByCode(code: string) {
-    return await fetchCountry(code)
+    let country = getItemWithTTL(code) as Country
+    if (!country) {
+      country = await fetchCountry(code)
+      setItemWithTTL(code, country, COUNTRY_OFFICIAL_NAMES_TTL)
+    }
+    return country
   }
 
   function sortCountriesByPopulation(countries: Country[]) {
