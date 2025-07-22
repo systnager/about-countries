@@ -1,4 +1,4 @@
-export type Country = {
+export interface Country {
   flags: {
     png: string
   }

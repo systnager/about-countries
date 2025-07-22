@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 
-export type loaderProvide = {
+export interface loaderProvide {
   showLoader: () => void
   hideLoader: () => void
   isLoading: Ref<boolean>

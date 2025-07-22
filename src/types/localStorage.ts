@@ -1,4 +1,4 @@
-export type TTLItem<T> = {
+export interface TTLItem<T> {
   value: T
   expiredAt: number
 }
