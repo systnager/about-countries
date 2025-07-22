@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { type Country } from '@/types/Countries'
 import CountryCard from '@/components/CountryCard.vue'
-defineProps({
-  countries: {
-    type: Array<Country>,
-    required: true,
-  },
-})
 
-const emit = defineEmits(['toggleFavoriteCountry'])
+defineProps<{
+  countries: Country[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'toggleFavoriteCountry', officialName: string): void
+}>()
 
 function onToggleFavorite(officialName: string) {
   emit('toggleFavoriteCountry', officialName)

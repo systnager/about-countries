@@ -2,42 +2,20 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-const props = defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-  region: {
-    type: String,
-    required: true,
-  },
-  population: {
-    type: Number,
-    required: true,
-  },
-  area: {
-    type: Number,
-    required: true,
-  },
-  lang: {
-    type: String,
-    required: true,
-  },
-  flagUrl: {
-    type: String,
-    required: true,
-  },
-  isFavorite: {
-    type: Boolean,
-    required: true,
-  },
-  ccn3: {
-    type: String,
-    required: true,
-  },
-})
+const props = defineProps<{
+  name: string
+  region: string
+  population: number
+  area: number
+  lang: string
+  flagUrl: string
+  isFavorite: boolean
+  ccn3: string
+}>()
 
-const emit = defineEmits(['toggleFavorite'])
+const emit = defineEmits<{
+  (e: 'toggleFavorite', value: void): void
+}>()
 
 const _isFavorite = ref(props.isFavorite)
 

@@ -14,22 +14,17 @@ const filterByNameInput = ref<string>('')
 const filterByRegionInput = ref<string>('')
 const filterByLanguageInput = ref<string>('')
 
-const props = defineProps({
-  countries: {
-    type: Array<Country>,
-    required: true,
-  },
-  onLoadMore: {
-    type: Function,
-    required: true,
-  },
-  canLoadMore: {
-    type: Function,
-    required: true,
-  },
-})
+const props = defineProps<{
+  countries: Country[]
+  onLoadMore: () => void
+  canLoadMore: () => boolean
+}>()
 
-const emit = defineEmits(['sortCountries', 'filterCountries', 'toggleFavoriteCountry'])
+const emit = defineEmits<{
+  (e: 'sortCountries', value: string): void
+  (e: 'filterCountries'): void
+  (e: 'toggleFavoriteCountry', officialName: string): void
+}>()
 
 defineExpose({
   filterByNameInput: readonly(filterByNameInput),
