@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useCountryStore } from '@/stores/country'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
 import type { Country } from '@/types/Countries'
@@ -9,14 +8,13 @@ import { useCountriesStore } from '@/stores/countries'
 
 const route = useRoute()
 const { t } = useI18n()
-const countryStore = useCountryStore()
 const countriesStore = useCountriesStore()
 const country = ref({} as Country)
 const relationCountries = ref([] as Country[])
 
 onMounted(async () => {
-  countriesStore.fetchCountries()
-  country.value = await countryStore.fetchCountry(route.params.code as string)
+  countriesStore.getCountries()
+  country.value = await countriesStore.getCountryByCode(route.params.code as string)
   relationCountries.value = countriesStore.getRelationCountries(
     Object.values(country.value.languages),
     country.value.region,

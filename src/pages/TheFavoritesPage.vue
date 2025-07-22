@@ -36,7 +36,7 @@ function onToggleFavoriteCountry(officialName: string) {
 
 onMounted(async () => {
   showLoader()
-  await countriesStore.fetchCountries()
+  await countriesStore.getCountries()
   setCountriesList(countriesStore.getFavoritedCountries())
   showFirstCountriesPage()
   hideLoader()

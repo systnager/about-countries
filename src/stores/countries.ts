@@ -1,28 +1,27 @@
 import { defineStore } from 'pinia'
 import { ref, readonly } from 'vue'
-import axios from 'axios'
 
 import { type Country } from '@/types/Countries'
 import { FAVORITE_COUNTRIES_OFFICIAL_NAMES_LOCAL_STORAGE_KEY } from '@/keys'
 import { setItemWithTTL, getItemWithTTL, removeItem } from '@/utils/localStorageTTL'
 import { FAVORITE_COUNTRIES_OFFICIAL_NAMES_TTL } from '@/constants'
 
+import { fetchCountries, fetchCountry } from '@/services/restcountries'
+
 export const useCountriesStore = defineStore('countries', () => {
   const countries = ref<Country[]>([])
 
-  async function fetchCountries() {
-    try {
-      const { data } = await axios.get('https://restcountries.com/v3.1/all', {
-        params: { fields: 'flags,name,region,population,area,languages,ccn3' },
-      })
-      const favorite_countries_official_names = getFavoritedCountriesOfficialName() || []
-      countries.value = data.map((country: Country) => ({
-        ...country,
-        isFavorite: favorite_countries_official_names.includes(country.name.official),
-      }))
-    } catch (error) {
-      console.error(error)
-    }
+  async function getCountries() {
+    const favorite_countries_official_names = getFavoritedCountriesOfficialName() || []
+    const data = await fetchCountries()
+    countries.value = data.map((country: Country) => ({
+      ...country,
+      isFavorite: favorite_countries_official_names.includes(country.name.official),
+    }))
+  }
+
+  async function getCountryByCode(code: string) {
+    return await fetchCountry(code)
   }
 
   function sortCountriesByPopulation(countries: Country[]) {
@@ -146,7 +145,8 @@ export const useCountriesStore = defineStore('countries', () => {
 
   return {
     countries: readonly(countries),
-    fetchCountries,
+    getCountries,
+    getCountryByCode,
     sortCountriesByPopulation,
     sortCountriesByArea,
     sortCountriesByPopulationDensity,

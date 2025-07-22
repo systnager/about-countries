@@ -5,6 +5,7 @@ import { LOADER_PROVIDER_KEY } from '@/keys'
 import CountryListView from '@/components/CountryListView.vue'
 import { useCountriesStore } from '@/stores/countries'
 import { useCountryPage } from '@/composables/useCountryPage'
+import type { Country } from '@/types/Countries'
 
 const { showLoader, hideLoader } = <loaderProvide>inject(LOADER_PROVIDER_KEY)
 const countryListViewRef = ref<typeof CountryListView>()
@@ -36,8 +37,8 @@ function onToggleFavoriteCountry(officialName: string) {
 
 onMounted(async () => {
   showLoader()
-  await countriesStore.fetchCountries()
-  setCountriesList([...countriesStore.countries])
+  await countriesStore.getCountries()
+  setCountriesList(countriesStore.countries as Country[])
   showFirstCountriesPage()
   hideLoader()
 })
