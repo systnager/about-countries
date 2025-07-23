@@ -83,14 +83,18 @@ onMounted(async () => {
 
 <template>
   <div class="text-gray dark:text-white">
-    <div class="w-full h-120">
-      <LineChart :line-chart-data="countriesCountOnRegionsGraphData" />
+    <div class="flex flex-wrap gap-5">
+      <div class="flex-1 min-h-[100px] max-h-[300px] min-w-[300px] max-w-full">
+        <h4 class="text-xl mt-5 font-bold text-center">{{ t('message.regions top') }}</h4>
+        <LineChart :line-chart-data="countriesCountOnRegionsGraphData" />
+      </div>
+      <div class="flex-1 min-h-[100px] max-h-[300px] min-w-[300px] max-w-full">
+        <h4 class="text-xl mt-5 font-bold text-center">{{ t('message.top 5 languages') }}</h4>
+        <LineChart :line-chart-data="languageTopCountGraphData" />
+      </div>
     </div>
-    <div class="w-full h-120">
-      <LineChart :line-chart-data="languageTopCountGraphData" />
-    </div>
-    <div>
-      <div class="w-full border-collapse px-10 py-5">
+    <div class="flex flex-wrap gap-3 mt-15">
+      <div class="min-w-[350px] max-w-full border-collapse mx-1 py-5 flex-1">
         <h3 class="text-xl mb-5 font-bold text-center">
           {{ t('message.top 10 countries') }} {{ t('message.by population') }}
         </h3>
@@ -99,7 +103,7 @@ onMounted(async () => {
           :table-data="topCountriesByPopulationTableData"
         />
       </div>
-      <div class="w-full border-collapse px-10 py-5">
+      <div class="min-w-[350px] max-w-full border-collapse mx-1 py-5 flex-1">
         <h3 class="text-xl mb-5 font-bold text-center">
           {{ t('message.top 10 countries') }} {{ t('message.by area') }}
         </h3>
@@ -108,7 +112,7 @@ onMounted(async () => {
           :table-data="topCountriesByAreaTableData"
         />
       </div>
-      <div class="w-full border-collapse px-10 py-5">
+      <div class="min-w-[350px] max-w-full border-collapse mx-1 py-5 flex-1">
         <h3 class="text-xl mb-5 font-bold text-center">
           {{ t('message.top 10 countries') }} {{ t('message.by languages count') }}
         </h3>

@@ -80,5 +80,5 @@ watch(options, () => {
 </script>
 
 <template>
-  <div :id="lineChartData.id" class="max-w-full m-auto text-gray dark:text-white"></div>
+  <div :id="lineChartData.id" class="m-auto text-gray dark:text-white"></div>
 </template>
