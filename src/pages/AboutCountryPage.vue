@@ -23,10 +23,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="text-gray dark:text-white px-15 py-10">
+  <div class="text-gray dark:text-white px-5 py-10">
     <div class="flex flex-col gap-3">
-      <div class="flex justify-between gap-3 bg-gray-200 dark:bg-gray-600 p-5 rounded-md">
-        <div class="flex flex-col my-auto">
+      <div class="flex flex-wrap items-center gap-5 bg-gray-200 dark:bg-gray-600 p-5 rounded-md">
+        <div class="flex flex-col m-auto min-w-42 text-center">
           <h2>
             {{ t('message.name') }}: <i>{{ country.name?.official }}</i>
           </h2>
@@ -40,12 +40,14 @@ onMounted(async () => {
             >{{ t('message.area') }}: <i>{{ country.area }}</i></span
           >
         </div>
-        <div>
+        <div class="m-auto">
           <img class="max-w-42 max-h-42" :src="country.flags?.png" />
         </div>
       </div>
-      <div class="flex justify-between mt-15 bg-gray-200 dark:bg-gray-600 p-5 rounded-md">
-        <span
+      <div
+        class="flex flex-wrap items-center gap-5 mt-15 bg-gray-200 dark:bg-gray-600 p-5 rounded-md"
+      >
+        <span class="flex-1 min-w-64 text-center"
           >{{ t('message.currencies') }}:
           <ul class="pl-5">
             <li v-for="currency in country.currencies" :key="currency.name">
@@ -53,13 +55,13 @@ onMounted(async () => {
             </li>
           </ul>
         </span>
-        <span
+        <span class="flex-1 min-w-64 text-center"
           >{{ t('message.timezones') }}:
           <ul class="pl-5">
             <li v-for="timezone in country.timezones" :key="timezone">{{ timezone }}</li>
           </ul></span
         >
-        <span
+        <span class="flex-1 min-w-64 text-center"
           >{{ t('message.languages') }}:
           <ul class="pl-5">
             <li v-for="lang in country.languages" :key="lang">{{ lang }}</li>
