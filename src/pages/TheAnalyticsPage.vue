@@ -10,6 +10,8 @@ import type { Country } from '@/types/Countries'
 import type { TableData } from '@/types/Table'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import LineChart from '@/components/LineChart.vue'
+import type { LineChartData } from '@/types/LineChart'
 
 const { t } = useI18n()
 
@@ -27,8 +29,18 @@ const topCountriesByLanguagesCountTableData = ref<TableData>({
   data: [{ id: 0, data: [] }],
 })
 
+const countriesCountOnRegionsGraphData = ref<LineChartData>({
+  id: 'countriesCountOnRegionsGraph',
+  categories: [],
+  series: [],
+})
+
 onMounted(async () => {
   await countriesStore.getCountries()
+  const CountryCountByRegionsStatisticData = countriesStore.getCountryCountByRegions(
+    countriesStore.countries as Country[],
+  )
+
   topCountriesByPopulationTableData.value = formatTopCountriesByPopulationTableData(
     countriesStore.getTopCountriesByPopulation(countriesStore.countries as Country[], 10),
     ['message.№', 'message.name', 'message.population'],
@@ -41,11 +53,22 @@ onMounted(async () => {
     countriesStore.getTopCountriesByLanguagesCount(countriesStore.countries as Country[], 10),
     ['message.№', 'message.name', 'message.languages'],
   )
+
+  countriesCountOnRegionsGraphData.value = {
+    id: 'countriesCountOnRegionsGraph',
+    categories: Object.keys(CountryCountByRegionsStatisticData),
+    series: [
+      { name: 'message.countries', data: Object.values(CountryCountByRegionsStatisticData) },
+    ],
+  }
 })
 </script>
 
 <template>
   <div class="text-gray dark:text-white">
+    <div class="w-full h-120">
+      <LineChart :line-chart-data="countriesCountOnRegionsGraphData" />
+    </div>
     <div>
       <div class="w-full border-collapse px-10 py-5">
         <h3 class="text-xl mb-5 font-bold text-center">
