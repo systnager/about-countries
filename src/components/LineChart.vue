@@ -3,6 +3,9 @@ import ApexCharts from 'apexcharts'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import type { LineChartData } from '@/types/LineChart'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   lineChartData: LineChartData
@@ -31,7 +34,8 @@ const options = computed(() => ({
       borderRadius: 3,
     },
   },
-  series: props.lineChartData.series,
+  series: computed(() => props.lineChartData.series.map((s) => ({ name: t(s.name), data: s.data })))
+    .value,
   xaxis: {
     categories: props.lineChartData.categories,
     labels: {
