@@ -35,10 +35,21 @@ const countriesCountOnRegionsGraphData = ref<LineChartData>({
   series: [],
 })
 
+const languageTopCountGraphData = ref<LineChartData>({
+  id: 'languageTopCountGraph',
+  categories: [],
+  series: [],
+})
+
 onMounted(async () => {
   await countriesStore.getCountries()
   const CountryCountByRegionsStatisticData = countriesStore.getCountryCountByRegions(
     countriesStore.countries as Country[],
+  )
+
+  const languageCountStatisticData = countriesStore.getTopLanguages(
+    countriesStore.countries as Country[],
+    5,
   )
 
   topCountriesByPopulationTableData.value = formatTopCountriesByPopulationTableData(
@@ -61,6 +72,12 @@ onMounted(async () => {
       { name: 'message.countries', data: Object.values(CountryCountByRegionsStatisticData) },
     ],
   }
+
+  languageTopCountGraphData.value = {
+    id: 'languageTopCountGraph',
+    categories: Object.keys(languageCountStatisticData),
+    series: [{ name: 'message.countries', data: Object.values(languageCountStatisticData) }],
+  }
 })
 </script>
 
@@ -68,6 +85,9 @@ onMounted(async () => {
   <div class="text-gray dark:text-white">
     <div class="w-full h-120">
       <LineChart :line-chart-data="countriesCountOnRegionsGraphData" />
+    </div>
+    <div class="w-full h-120">
+      <LineChart :line-chart-data="languageTopCountGraphData" />
     </div>
     <div>
       <div class="w-full border-collapse px-10 py-5">

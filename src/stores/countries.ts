@@ -192,6 +192,24 @@ export const useCountriesStore = defineStore('countries', () => {
     return regions
   }
 
+  function getTopLanguages(countries: Country[], topCount: number) {
+    const languages: { [key: string]: number } = {}
+    countries.forEach((country: Country) => {
+      for (const key in country.languages) {
+        if (languages[country.languages[key]]) {
+          languages[country.languages[key]]++
+        } else {
+          languages[country.languages[key]] = 1
+        }
+      }
+    })
+    return Object.fromEntries(
+      Object.entries(languages)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, topCount),
+    )
+  }
+
   return {
     countries: readonly(countries),
     getCountries,
@@ -212,5 +230,6 @@ export const useCountriesStore = defineStore('countries', () => {
     getTopCountriesByArea,
     getTopCountriesByLanguagesCount,
     getCountryCountByRegions,
+    getTopLanguages,
   }
 })
