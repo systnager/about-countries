@@ -71,36 +71,39 @@ watchDebounced(
 
 <template>
   <div>
-    <div class="flex justify-between m-5">
-      <div class="flex gap-3">
-        <select
-          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md cursor-pointer truncate"
-          @change="onSortCountries(($event.target as HTMLSelectElement).value || '')"
-        >
-          <option value="" disabled selected>{{ t('message.sort by') }}</option>
-          <option value="byPopulation">{{ t('message.by population') }}</option>
-          <option value="byArea">{{ t('message.by area') }}</option>
-          <option value="byPopulationDensity">{{ t('message.by population density') }}</option>
-        </select>
-        <input
-          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
-          :placeholder="t('message.by name')"
-          v-model="filterByNameInput"
-        />
-      </div>
-      <div class="flex gap-3">
-        <input
-          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
-          :placeholder="t('message.by continent')"
-          v-model="filterByRegionInput"
-        />
-        <input
-          class="w-52 h-10 bg-while dark:bg-gray-600 px-5 px-2 rounded-md text-black dark:text-white shadow-md"
-          :placeholder="t('message.by language')"
-          v-model="filterByLanguageInput"
-        />
-      </div>
+    <div class="flex flex-wrap items-center justify-center gap-2 p-4 max-w-full mx-auto">
+      <select
+        class="flex-grow min-w-[150px] max-w-full h-10 bg-white dark:bg-gray-600 px-5 rounded-md text-black dark:text-white shadow-md cursor-pointer truncate"
+        @change="onSortCountries(($event.target as HTMLSelectElement).value || '')"
+      >
+        <option value="" disabled selected>{{ t('message.sort by') }}</option>
+        <option value="byPopulation">{{ t('message.by population') }}</option>
+        <option value="byArea">{{ t('message.by area') }}</option>
+        <option value="byPopulationDensity">{{ t('message.by population density') }}</option>
+      </select>
+
+      <input
+        type="text"
+        class="flex-grow min-w-[150px] max-w-full h-10 bg-white dark:bg-gray-600 px-5 rounded-md text-black dark:text-white shadow-md"
+        :placeholder="t('message.by name')"
+        v-model="filterByNameInput"
+      />
+
+      <input
+        type="text"
+        class="flex-grow min-w-[150px] max-w-full h-10 bg-white dark:bg-gray-600 px-5 rounded-md text-black dark:text-white shadow-md"
+        :placeholder="t('message.by continent')"
+        v-model="filterByRegionInput"
+      />
+
+      <input
+        type="text"
+        class="flex-grow min-w-[150px] max-w-full h-10 bg-white dark:bg-gray-600 px-5 rounded-md text-black dark:text-white shadow-md"
+        :placeholder="t('message.by language')"
+        v-model="filterByLanguageInput"
+      />
     </div>
+
     <CountryCardList :countries="countries" @toggle-favorite-country="toggleFavoriteCountry" />
   </div>
 </template>
