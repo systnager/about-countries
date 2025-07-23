@@ -180,6 +180,18 @@ export const useCountriesStore = defineStore('countries', () => {
       .slice(0, count)
   }
 
+  function getCountryCountByRegions(countries: Country[]) {
+    const regions: { [key: string]: number } = {}
+    countries.forEach((country: Country) => {
+      if (regions[country.region]) {
+        regions[country.region]++
+      } else {
+        regions[country.region] = 1
+      }
+    })
+    return regions
+  }
+
   return {
     countries: readonly(countries),
     getCountries,
@@ -199,5 +211,6 @@ export const useCountriesStore = defineStore('countries', () => {
     getTopCountriesByPopulation,
     getTopCountriesByArea,
     getTopCountriesByLanguagesCount,
+    getCountryCountByRegions,
   }
 })
