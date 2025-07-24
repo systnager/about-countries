@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref, provide, readonly } from 'vue'
+import { ref, provide, readonly, onMounted, watch } from 'vue'
 import { LOADER_PROVIDER_KEY, SCROLL_ALLOWING_TOOGLE_KEY } from '@/keys'
 import TheHeader from '@/components/TheHeader.vue'
 import WaitLoader from '@/components/WaitLoader.vue'
 import { useScrollLock, useToggle } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const isLoading = ref(false)
 const loaderOnCount = ref(0)
@@ -47,6 +50,14 @@ provide(SCROLL_ALLOWING_TOOGLE_KEY, {
   allowScroll,
   disallowScroll,
   toggleLock,
+})
+
+onMounted(() => {
+  document.title = t('message.title')
+})
+
+watch(locale, () => {
+  document.title = t('message.title')
 })
 </script>
 
