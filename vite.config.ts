@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   server: {
-    host: true, // this enables listening on all network interfaces (0.0.0.0)
-    port: 5173, // optional, change to your preferred port
+    host: true,
+    port: 5173,
   },
 })
