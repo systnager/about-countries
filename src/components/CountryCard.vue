@@ -29,7 +29,7 @@ function toggleFavorite() {
 
 <template>
   <div
-    class="flex flex-col bg-neutral-200 dark:bg-neutral-600 dark:text-white p-5 rounded-md hover:shadow-md"
+    class="flex flex-col bg-neutral-200 dark:bg-neutral-700 dark:text-white p-5 rounded-md hover:shadow-md"
   >
     <a
       :href="`/country/${ccn3}`"
