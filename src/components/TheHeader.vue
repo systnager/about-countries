@@ -1,11 +1,42 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useTheme } from '@/composables/useTheme'
-import { ref } from 'vue'
+import { ref, watch, inject, onMounted, onUnmounted } from 'vue'
+import { SCROLL_ALLOWING_TOOGLE_KEY } from '@/keys'
+import type { ScrollAllowingToggle } from '@/types/provides'
 const { t, locale } = useI18n()
-
 const { isDark, toggleDark } = useTheme()
 const isShowMobileMenu = ref(false)
+const innerWidth = ref(window.innerWidth)
+const { toggleLock, allowScroll, disallowScroll } = inject(
+  SCROLL_ALLOWING_TOOGLE_KEY,
+) as ScrollAllowingToggle
+
+watch(isShowMobileMenu, () => {
+  toggleLock()
+})
+
+watch(innerWidth, () => {
+  console.log(innerWidth.value)
+  if (innerWidth.value < 768 && isShowMobileMenu.value) {
+    disallowScroll()
+    isShowMobileMenu.value = false
+  } else if (innerWidth.value >= 768 && isShowMobileMenu.value) {
+    allowScroll()
+  }
+})
+
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    innerWidth.value = window.innerWidth
+  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', () => {
+    innerWidth.value = window.innerWidth
+  })
+})
 </script>
 
 <template>
