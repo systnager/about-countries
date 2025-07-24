@@ -52,7 +52,7 @@ onUnmounted(() => {
     <div
       :class="[
         isShowMobileMenu
-          ? 'border-t dark:border-gray-600 fixed top-16 left-0 w-full h-full bg-neutral-100 dark:bg-neutral-700 flex flex-col items-center pt-15 gap-5 z-50 md:block md:top-0 md:w-auto md:h-auto  md:block md:pt-0 gap-5 md:z-50 md:relative md:bg-transparent md:dark:bg-transparent md:border-none'
+          ? 'fixed top-16 left-0 w-full h-full bg-neutral-200 dark:bg-neutral-800 flex flex-col items-center pt-15 gap-5  md:block md:top-0 md:w-auto md:h-auto  md:block md:pt-0 gap-5  md:relative md:bg-transparent md:dark:bg-transparent'
           : 'hidden md:flex items-center justify-center gap-5 flex-1',
       ]"
     >
