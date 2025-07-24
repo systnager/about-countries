@@ -45,7 +45,7 @@ const isShowMobileMenu = ref(false)
       >
     </div>
     <div class="flex-1"></div>
-    <div class="flex items-center justify-center gap-5">
+    <div class="flex items-center justify-center gap-3">
       <img
         class="w-10 h-10 cursor-pointer transition hover:scale-110 active:scale-90"
         :src="locale === 'ukr' ? '/select-ukraine.png' : '/unselect-ukraine.png'"
@@ -65,9 +65,9 @@ const isShowMobileMenu = ref(false)
         @click="toggleDark()"
       />
     </div>
-    <button class="md:hidden" @click="isShowMobileMenu = !isShowMobileMenu">
+    <button class="md:hidden ml-5" @click="isShowMobileMenu = !isShowMobileMenu">
       <img
-        class="ml-3 w-10 h-10 cursor-pointer transition hover:scale-110 active:scale-90"
+        class="w-10 h-10 cursor-pointer transition hover:scale-110 active:scale-90"
         :src="isDark ? '/dark-burger.png' : '/light-burger.png'"
       />
     </button>
