@@ -49,7 +49,7 @@ onMounted(async () => {
       >
         <span class="flex-1 min-w-64 text-center"
           >{{ t('message.currencies') }}:
-          <ul class="pl-5">
+          <ul>
             <li v-for="currency in country.currencies" :key="currency.name">
               {{ currency.symbol }} {{ currency.name }}
             </li>
@@ -57,13 +57,13 @@ onMounted(async () => {
         </span>
         <span class="flex-1 min-w-64 text-center"
           >{{ t('message.timezones') }}:
-          <ul class="pl-5">
+          <ul>
             <li v-for="timezone in country.timezones" :key="timezone">{{ timezone }}</li>
           </ul></span
         >
         <span class="flex-1 min-w-64 text-center"
           >{{ t('message.languages') }}:
-          <ul class="pl-5">
+          <ul>
             <li v-for="lang in country.languages" :key="lang">{{ lang }}</li>
           </ul></span
         >
