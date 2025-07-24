@@ -73,7 +73,7 @@ watchDebounced(
   <div>
     <div class="flex flex-wrap items-center justify-center gap-2 p-4 max-w-full mx-auto mt-2">
       <select
-        class="flex-grow min-w-[150px] max-w-full h-11 bg-white dark:bg-gray-600 px-5 rounded-md text-black dark:text-white shadow-md cursor-pointer truncate"
+        class="flex-grow min-w-[150px] max-w-full h-11 bg-white dark:bg-neutral-600 px-5 rounded-md text-black dark:text-white shadow-md cursor-pointer truncate"
         @change="onSortCountries(($event.target as HTMLSelectElement).value || '')"
       >
         <option value="" disabled selected>{{ t('message.sort by') }}</option>
@@ -84,21 +84,21 @@ watchDebounced(
 
       <input
         type="text"
-        class="flex-grow min-w-[150px] max-w-full h-11 bg-white dark:bg-gray-600 px-5 rounded-md text-black dark:text-white shadow-md"
+        class="flex-grow min-w-[150px] max-w-full h-11 bg-white dark:bg-neutral-600 px-5 rounded-md text-black dark:text-white shadow-md"
         :placeholder="t('message.by name')"
         v-model="filterByNameInput"
       />
 
       <input
         type="text"
-        class="flex-grow min-w-[150px] max-w-full h-11 bg-white dark:bg-gray-600 px-5 rounded-md text-black dark:text-white shadow-md"
+        class="flex-grow min-w-[150px] max-w-full h-11 bg-white dark:bg-neutral-600 px-5 rounded-md text-black dark:text-white shadow-md"
         :placeholder="t('message.by continent')"
         v-model="filterByRegionInput"
       />
 
       <input
         type="text"
-        class="flex-grow min-w-[150px] max-w-full h-11 bg-white dark:bg-gray-600 px-5 rounded-md text-black dark:text-white shadow-md"
+        class="flex-grow min-w-[150px] max-w-full h-11 bg-white dark:bg-neutral-600 px-5 rounded-md text-black dark:text-white shadow-md"
         :placeholder="t('message.by language')"
         v-model="filterByLanguageInput"
       />

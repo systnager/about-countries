@@ -11,7 +11,7 @@ defineProps<{
   <div>
     <table class="w-full">
       <tbody>
-        <tr class="bg-gray-300 dark:bg-gray-700 text-left">
+        <tr class="bg-neutral-300 dark:bg-neutral-700 text-left">
           <th
             v-for="header in tableData.headers"
             :key="header"
@@ -23,7 +23,7 @@ defineProps<{
         <tr
           v-for="{ id, data } in tableData.data"
           :key="id"
-          class="odd:bg-gray-100 even:bg-gray-200 dark:odd:bg-gray-800 dark:even:bg-gray-900"
+          class="odd:bg-neutral-100 even:bg-neutral-200 dark:odd:bg-neutral-800 dark:even:bg-neutral-900"
         >
           <td
             v-for="item in data"

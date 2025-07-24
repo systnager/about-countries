@@ -25,7 +25,9 @@ onMounted(async () => {
 <template>
   <div class="text-gray dark:text-white px-5 py-10">
     <div class="flex flex-col gap-3">
-      <div class="flex flex-wrap items-center gap-5 bg-gray-200 dark:bg-gray-600 p-5 rounded-md">
+      <div
+        class="flex flex-wrap items-center gap-5 bg-neutral-200 dark:bg-neutral-600 p-5 rounded-md"
+      >
         <div class="flex flex-col m-auto min-w-42 text-center">
           <h2>
             {{ t('message.name') }}: <i>{{ country.name?.official }}</i>
@@ -45,7 +47,7 @@ onMounted(async () => {
         </div>
       </div>
       <div
-        class="flex flex-wrap items-center gap-5 mt-15 bg-gray-200 dark:bg-gray-600 p-5 rounded-md"
+        class="flex flex-wrap items-center gap-5 mt-15 bg-neutral-200 dark:bg-neutral-600 p-5 rounded-md"
       >
         <span class="flex-1 min-w-64 text-center"
           >{{ t('message.currencies') }}:
@@ -75,7 +77,7 @@ onMounted(async () => {
         <a
           v-for="relationCountry in relationCountries"
           :key="relationCountry.name?.official"
-          class="flex justify-between items-center gap-3 bg-gray-200 dark:bg-gray-600 p-5 rounded-md hover:shadow-xl cursor-pointer transition hover:scale-105 active:scale-95"
+          class="flex justify-between items-center gap-3 bg-neutral-200 dark:bg-neutral-600 p-5 rounded-md hover:shadow-xl cursor-pointer transition hover:scale-105 active:scale-95"
           :href="`/country/${relationCountry.ccn3}`"
           ><span>{{ relationCountry.name?.official }}</span>
           <img class="max-w-8 max-h-8" :src="relationCountry.flags?.png"

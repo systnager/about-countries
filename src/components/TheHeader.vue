@@ -41,7 +41,7 @@ onUnmounted(() => {
 
 <template>
   <nav
-    class="sticky top-0 flex items-center justify-between p-5 bg-gray-200 dark:bg-gray-600 dark:text-white w-full z-10 h-16 shadow-md"
+    class="sticky top-0 flex items-center justify-between p-5 bg-neutral-200 dark:bg-neutral-800 dark:text-white w-full z-10 h-16 shadow-md"
   >
     <RouterLink
       class="text-xl px-5 py-2 font-bold cursor-pointer transition hover:scale-110 active:scale-90"
@@ -52,7 +52,7 @@ onUnmounted(() => {
     <div
       :class="[
         isShowMobileMenu
-          ? 'fixed top-16 left-0 w-full h-full bg-gray-300 dark:bg-gray-800 flex flex-col items-center pt-15 gap-5 z-50 md:block md:top-0 md:w-auto md:h-auto  md:block md:pt-0 gap-5 md:z-50 md:relative md:bg-transparent md:dark:bg-transparent'
+          ? 'border-t dark:border-gray-600 fixed top-16 left-0 w-full h-full bg-neutral-100 dark:bg-neutral-700 flex flex-col items-center pt-15 gap-5 z-50 md:block md:top-0 md:w-auto md:h-auto  md:block md:pt-0 gap-5 md:z-50 md:relative md:bg-transparent md:dark:bg-transparent md:border-none'
           : 'hidden md:flex items-center justify-center gap-5 flex-1',
       ]"
     >
