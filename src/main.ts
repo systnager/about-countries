@@ -1,23 +1,12 @@
-import './assets/main.css'
+import '@/assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { router } from '@/router/index'
-import { createI18n } from 'vue-i18n'
-import ukr from '@/i18n/locales/ukr.json'
-import eng from '@/i18n/locales/eng.json'
 
-import App from './App.vue'
+import App from '@/App.vue'
+import { i18n } from '@/i18n/main'
 
-const i18n = createI18n({
-  legacy: false,
-  locale: 'ukr',
-  fallbackLocate: 'eng',
-  messages: {
-    ukr,
-    eng,
-  },
-})
 const app = createApp(App)
 const pinia = createPinia()
 

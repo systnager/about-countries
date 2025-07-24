@@ -4,7 +4,9 @@ import { useTheme } from '@/composables/useTheme'
 import { ref, watch, inject, onMounted, onUnmounted } from 'vue'
 import { SCROLL_ALLOWING_TOOGLE_KEY } from '@/keys'
 import type { ScrollAllowingToggle } from '@/types/provides'
+import { useLanguage } from '@/composables/useLanguage'
 const { t, locale } = useI18n()
+const { setLocale } = useLanguage()
 const { isDark, toggleDark } = useTheme()
 const isShowMobileMenu = ref(false)
 const innerWidth = ref(window.innerWidth)
@@ -81,13 +83,13 @@ onUnmounted(() => {
         class="w-10 h-10 cursor-pointer transition hover:scale-110 active:scale-90"
         :src="locale === 'ukr' ? '/select-ukraine.png' : '/unselect-ukraine.png'"
         :alt="t('message.choice ukr')"
-        @click="locale = 'ukr'"
+        @click="setLocale('ukr')"
       />
       <img
         class="w-10 h-10 cursor-pointer transition hover:scale-110 active:scale-90"
         :src="locale === 'eng' ? '/select-en.png' : '/unselect-en.png'"
         :alt="t('message.choice eng')"
-        @click="locale = 'eng'"
+        @click="setLocale('eng')"
       />
       <img
         class="w-10 h-10 cursor-pointer transition hover:scale-110 active:scale-90"
