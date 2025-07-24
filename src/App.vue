@@ -29,14 +29,12 @@ function allowScroll() {
   if (isLocked.value) {
     isLocked.value = false
   }
-  console.log(isLocked.value)
 }
 
 function disallowScroll() {
   if (!isLocked.value) {
     isLocked.value = true
   }
-  console.log(isLocked.value)
 }
 
 provide(LOADER_PROVIDER_KEY, {

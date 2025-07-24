@@ -19,7 +19,6 @@ watch(isShowMobileMenu, () => {
 })
 
 watch(innerWidth, () => {
-  console.log(innerWidth.value)
   if (innerWidth.value < 768 && isShowMobileMenu.value) {
     disallowScroll()
     isShowMobileMenu.value = false
